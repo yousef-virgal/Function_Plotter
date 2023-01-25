@@ -2,6 +2,7 @@ import sys
 from PySide2.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout,QVBoxLayout, QLabel
 
 from Edit_line_Component.editLineComponent import EditLine
+from Button_Component.buttonComponent import PlotButton
 class MainWindow(QMainWindow):
 
     def __init__(self):
@@ -15,28 +16,27 @@ class MainWindow(QMainWindow):
         self.label1 = QLabel()
         self.label1.setText("Hello from label 1")
         
-        self.label2 = QLabel()
-        self.label2.setText("Hello from label 2")
-
-        
-        self.minEditLine = EditLine(id="min", labelText="minimum value for x", inputChangeHandler=self.inputChangeHandler)
-
-        self.maxEditLine = EditLine(id="max", labelText="maximum value for x", inputChangeHandler=self.inputChangeHandler)
+        self.minEditLine = EditLine(id="min", labelText="minimum value for x", editTextIntialValue="0", inputChangeHandler=self.inputChangeHandler)
+        self.maxEditLine = EditLine(id="max", labelText="maximum value for x", editTextIntialValue="0", inputChangeHandler=self.inputChangeHandler)
+        self.functionEditText = EditLine(id="function", labelText="Enter Function",  inputChangeHandler=self.inputChangeHandler, allowOnlyNumbers=False)
+        self.plotButton = PlotButton(buttonText="Plot", buttonHandler=self.plotButtonClickHandler)
 
         self.verticalLayout.addWidget(self.minEditLine)
         self.verticalLayout.addWidget(self.maxEditLine)
-        self.horizontalLayout.addLayout(self.verticalLayout)
+        self.verticalLayout.addWidget(self.functionEditText)
+        self.verticalLayout.addWidget(self.plotButton)
 
-        self.horizontalLayout.addWidget(self.label1)
-        self.horizontalLayout.addWidget(self.label2)
-
-        
+        self.horizontalLayout.addLayout(self.verticalLayout,3)
+        self.horizontalLayout.addWidget(self.label1,7)
 
         self.screen.setLayout(self.horizontalLayout)
         self.setCentralWidget(self.screen)
     
     def inputChangeHandler(self, newText):
         print(newText)
+    
+    def plotButtonClickHandler(self):
+        print("Button Clicked")
 
 app = QApplication(sys.argv)
 

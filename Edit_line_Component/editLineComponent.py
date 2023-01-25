@@ -4,7 +4,7 @@ from PySide2.QtGui import QIntValidator
 
 class EditLine(QWidget):
 
-    def __init__(self, id, inputChangeHandler, labelText="", minAcceptedValue=-10_000, maxAcceptedValue=10_000) :
+    def __init__(self, id, inputChangeHandler, labelText="", editTextIntialValue="" ,minAcceptedValue=-10_000, maxAcceptedValue=10_000, allowOnlyNumbers=True) :
         super(EditLine, self).__init__()
 
         self.inputChangeHandler = inputChangeHandler
@@ -16,8 +16,9 @@ class EditLine(QWidget):
         self.editText = QLineEdit()
 
         self.label.setText(labelText)
-        self.editText.setValidator(QIntValidator(minAcceptedValue,maxAcceptedValue))
-        self.editText.setText("0")
+        if allowOnlyNumbers:
+            self.editText.setValidator(QIntValidator(minAcceptedValue,maxAcceptedValue))
+        self.editText.setText(editTextIntialValue)
         self.editText.textChanged.connect(inputChangeHandler)
 
         self.layout.addWidget(self.label)
