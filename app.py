@@ -1,7 +1,7 @@
 import sys
 from PySide2.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout,QVBoxLayout, QLabel
-from PySide2.QtGui import QPalette, QColor
 
+from Edit_line_Component.editLineComponent import EditLine
 class MainWindow(QMainWindow):
 
     def __init__(self):
@@ -19,14 +19,12 @@ class MainWindow(QMainWindow):
         self.label2.setText("Hello from label 2")
 
         
-        self.label3 = QLabel()
-        self.label3.setText("Hello from label 3")
+        self.minEditLine = EditLine(id="min", labelText="minimum value for x", inputChangeHandler=self.inputChangeHandler)
 
-        self.label4 = QLabel()
-        self.label4.setText("Hello from label 4")
+        self.maxEditLine = EditLine(id="max", labelText="maximum value for x", inputChangeHandler=self.inputChangeHandler)
 
-        self.verticalLayout.addWidget(self.label3)
-        self.verticalLayout.addWidget(self.label4)
+        self.verticalLayout.addWidget(self.minEditLine)
+        self.verticalLayout.addWidget(self.maxEditLine)
         self.horizontalLayout.addLayout(self.verticalLayout)
 
         self.horizontalLayout.addWidget(self.label1)
@@ -36,6 +34,9 @@ class MainWindow(QMainWindow):
 
         self.screen.setLayout(self.horizontalLayout)
         self.setCentralWidget(self.screen)
+    
+    def inputChangeHandler(self, newText):
+        print(newText)
 
 app = QApplication(sys.argv)
 
