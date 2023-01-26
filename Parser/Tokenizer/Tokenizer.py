@@ -11,6 +11,7 @@ class Tokenizer:
     def tokenize(self):
         tokenList = []
         while self.currentIndex < len(self.text):
+            self.checkWhiteSpace()
             if (self.match("-")):
                 tokenList.append(Token(tokenType=TokenTypes.SUB, tokenValue="-"))
             elif(self.match("*")):
@@ -21,11 +22,6 @@ class Tokenizer:
                 tokenList.append(Token(tokenType=TokenTypes.ADD, tokenValue="+"))
             elif(self.match("^")):
                 tokenList.append(Token(tokenType=TokenTypes.POW, tokenValue="^"))
-            
-            elif(self.match("(")):
-                tokenList.append(Token(tokenType=TokenTypes.LEFTPARN, tokenValue="("))
-            elif(self.match(")")):
-                tokenList.append(Token(tokenType=TokenTypes.RIGHTPARN, tokenValue=")"))
             
             elif(self.match("X") or self.match("x")):
                 tokenList.append(Token(tokenType=TokenTypes.UNKNOWN, tokenValue="X"))
@@ -54,6 +50,10 @@ class Tokenizer:
                 raise Exception(f"Invalid Token: {self.text[self.currentIndex]} at {self.currentIndex + 1}")
 
         return tokenList
+
+    def checkWhiteSpace(self):
+        while self.text[self.currentIndex] == " " or self.text[self.currentIndex] == "\t":
+            self.currentIndex += 1
 
     def setText(self, text):
         self.text = text
