@@ -66,7 +66,7 @@ class MainWindow(QMainWindow):
             return
         try :
             tokenizer = Tokenizer()
-            tokenizer.setText(self.function)
+            tokenizer.setText(self.function.strip())
             parser = Parser()
             parser.setTokens(tokenizer.tokenize())
             tree = parser.parse()

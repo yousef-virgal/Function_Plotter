@@ -18,4 +18,23 @@ value and ending at a maximum value specfied by the user
 
 ## Examples
 
+Plotting X<sup>2</sup> from -10 to 10
+
+![X^2 plot](/screenshots//X%5E2_plot.png)
+
+Plotting X<sup>2</sup> + 10X <sup>5</sup> from -100 to 0
+
+![X^5 plot](/screenshots/x%5E5_plot.png)
+
+Entering minimum value greater than the maximum value
+
+![error_1](/screenshots/error1.png)
+
+Entering an invalid token
+![error_2](/screenshots/error2.png)
+
+Entering a wrong expression 
+![error_3](/screenshots/error3.png)
+
+
 
