@@ -1,5 +1,5 @@
-from Token import Token
-from const import TokenTypes
+from Parser.Tokenizer.Token import Token
+from Parser.Tokenizer.const import TokenTypes
 
 class Tokenizer:
 
@@ -76,7 +76,7 @@ class Tokenizer:
 
 if __name__ == "__main__":
     tokenizer = Tokenizer()
-    tokenizer.setText("-100^")
+    tokenizer.setText("10X^2+5X^3")
     list = tokenizer.tokenize()
     for token in list:
         print(token)

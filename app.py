@@ -4,6 +4,9 @@ from PySide2.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout,QV
 from Edit_line_Component.editLineComponent import EditLine
 from Button_Component.buttonComponent import PlotButton
 from Graph_Component.graphComponent import GraphComponent
+from Parser.parser import Parser
+from Parser.Tokenizer.Tokenizer import Tokenizer
+from Parser.nodeTypes import NodeTypes
 class MainWindow(QMainWindow):
 
     def __init__(self):
@@ -11,6 +14,8 @@ class MainWindow(QMainWindow):
 
         self.min = 0
         self.max = 0 
+        self.function = ""
+        self.tree = None
 
         self.setWindowTitle("Function Ploter")
         self.screen = QWidget()
@@ -21,7 +26,7 @@ class MainWindow(QMainWindow):
         
         self.minEditLine = EditLine(id="min", labelText="minimum value for x", editTextIntialValue="0", inputChangeHandler=self.minInputChangeHandler)
         self.maxEditLine = EditLine(id="max", labelText="maximum value for x", editTextIntialValue="0", inputChangeHandler=self.maxInputChangeHandler)
-        self.functionEditText = EditLine(id="function", labelText="Enter Function",  inputChangeHandler=self.maxInputChangeHandler, allowOnlyNumbers=False)
+        self.functionEditText = EditLine(id="function", labelText="Enter Function",  inputChangeHandler=self.functionChangeHandler, allowOnlyNumbers=False)
         self.plotButton = PlotButton(buttonText="Plot", buttonHandler=self.plotButtonClickHandler)
 
         self.verticalLayout.addWidget(self.minEditLine)
@@ -40,11 +45,32 @@ class MainWindow(QMainWindow):
     
     def maxInputChangeHandler(self, newText):
         self.max = self.getNumber(newText)
+
+    def functionChangeHandler(self,newText):
+        self.function = newText
     
     def plotButtonClickHandler(self):
         print("clicked")
-        self.graph.updateGraph(self.min,self.max,None)
+        tokenizer = Tokenizer()
+        tokenizer.setText(self.function)
+        parser = Parser()
+        parser.setTokens(tokenizer.tokenize())
+        tree = parser.parse()
 
+        self.graph.updateGraph(self.min,self.max,tree,self.computeFunction)
+
+    def computeFunction(self,xArray,tree):
+        if tree.type == NodeTypes.ADD:
+            return self.computeFunction(xArray,tree.children[0]) + self.computeFunction(xArray,tree.children[1])
+        elif tree.type == NodeTypes.MUL:
+            return self.computeFunction(xArray,tree.children[0]) * self.computeFunction(xArray,tree.children[1])
+        elif tree.type == NodeTypes.SUB:
+            return self.computeFunction(xArray,tree.children[0]) - self.computeFunction(xArray,tree.children[1])
+        elif tree.type == NodeTypes.DIV:
+            return self.computeFunction(xArray,tree.children[0]) / self.computeFunction(xArray,tree.children[1])
+        elif tree.type == NodeTypes.VARIABLE:
+            return (xArray**tree.value.powerValue) * tree.value.multiplierValue
+        
     def getNumber(self, text):
         if text == "-" or text == "":
             return 0

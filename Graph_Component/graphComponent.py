@@ -9,10 +9,10 @@ class GraphComponent(FigureCanvasQTAgg):
         self.axes = self.fig.add_subplot(111)
         super(GraphComponent, self).__init__(self.fig)
     
-    def updateGraph(self, xMin, xMax, function):
+    def updateGraph(self, xMin, xMax, tree,function):
         xAxis = np.linspace(xMin,xMax,1_000)
-        yAxis = function(xAxis)
-        
+        yAxis = function(xAxis,tree)
+
         self.fig.clear()
         self.axes = self.fig.add_subplot(111)
         self.axes.plot(xAxis, yAxis)
