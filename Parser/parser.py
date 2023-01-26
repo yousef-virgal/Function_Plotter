@@ -8,7 +8,7 @@ from Parser.nodeTypes import NodeTypes
  # addop = + | - DONE
  # math = exp | exp addop math  parse
  # exp = node | node mathop exp
- # node = num | num X [^num]   Done
+ # node = num | num X [^num] | X [^num] Done
 class Parser:
 
     def __init__(self) -> None:
@@ -35,9 +35,13 @@ class Parser:
    
     def mulOrDivExperssion(self):
         leftPart =  self.node()
+        if leftPart.type == NodeTypes.VARIABLE and leftPart.value.multiplierValue == None:
+            raise Exception("Invalid Expersion")
         operation = self.isMultiplyOrDivide()
         if operation != None:
             rightPart = self.mulOrDivExperssion()
+            if rightPart.type == NodeTypes.VARIABLE and rightPart.value.multiplierValue == None:
+                raise Exception("Invalid Expersion")
             operation.children.append(leftPart)
             operation.children.append(rightPart)
             return operation
@@ -47,11 +51,12 @@ class Parser:
     def node(self):
         node = Node(type=NodeTypes.VARIABLE)
         values = VariableNode()
-        if not self.match(TokenTypes.NUMBER,False):
-            raise Exception("Expected a Number but at line")
 
-        values.multiplierValue = self.tokens[self.currentToken].tokenValue
-        self.currentToken += 1
+        if self.match(TokenTypes.NUMBER,False):
+            values.multiplierValue = self.tokens[self.currentToken].tokenValue
+            self.currentToken += 1
+        elif self.match(TokenTypes.UNKNOWN, False):
+            values.multiplierValue = 1
 
         if (self.match(TokenTypes.UNKNOWN)):
             if self.match(TokenTypes.POW):
@@ -70,7 +75,6 @@ class Parser:
         return node 
 
         
-
     def match(self, matchValue, consume=True):
         if (self.currentToken > len(self.tokens) - 1):
             return False
@@ -87,9 +91,13 @@ class Parser:
 
     def parse(self):
         leftPart = self.mulOrDivExperssion()
+        if leftPart.type == NodeTypes.VARIABLE and leftPart.value.multiplierValue == None:
+            raise Exception("Invalid Expersion")
         operation = self.isAddOrSub()
         if (operation != None):
             rightPart = self.parse()
+            if rightPart.type == NodeTypes.VARIABLE and rightPart.value.multiplierValue == None :
+                raise Exception("Invalid Expersion")
             operation.children.append(leftPart)
             operation.children.append(rightPart)
             return operation

@@ -24,8 +24,8 @@ class MainWindow(QMainWindow):
 
         self.graph = GraphComponent(self, width=5, height=4, dpi=100)
         
-        self.minEditLine = EditLine(id="min", labelText="minimum value for x", editTextIntialValue="0", inputChangeHandler=self.minInputChangeHandler)
-        self.maxEditLine = EditLine(id="max", labelText="maximum value for x", editTextIntialValue="0", inputChangeHandler=self.maxInputChangeHandler)
+        self.minEditLine = EditLine(id="min", labelText="Minimum value for x:", editTextIntialValue="0", inputChangeHandler=self.minInputChangeHandler)
+        self.maxEditLine = EditLine(id="max", labelText="Maximum value for x:", editTextIntialValue="0", inputChangeHandler=self.maxInputChangeHandler)
         self.functionEditText = EditLine(id="function", labelText="Enter Function",  inputChangeHandler=self.functionChangeHandler, allowOnlyNumbers=False)
         self.plotButton = PlotButton(buttonText="Plot", buttonHandler=self.plotButtonClickHandler)
 
@@ -57,13 +57,16 @@ class MainWindow(QMainWindow):
             self.popupScreen.setText("Minimum value greater than Maximum value")
             self.popupScreen.exec_()
             return
-        tokenizer = Tokenizer()
-        tokenizer.setText(self.function)
-        parser = Parser()
-        parser.setTokens(tokenizer.tokenize())
-        tree = parser.parse()
-
-        self.graph.updateGraph(self.min,self.max,tree,self.computeFunction)
+        try :
+            tokenizer = Tokenizer()
+            tokenizer.setText(self.function)
+            parser = Parser()
+            parser.setTokens(tokenizer.tokenize())
+            tree = parser.parse()
+            self.graph.updateGraph(self.min,self.max,tree,self.computeFunction)
+        except Exception as e:
+            self.popupScreen.setText(f"{e}")
+            self.popupScreen.exec_()
 
     def computeFunction(self,xArray,tree):
         if tree.type == NodeTypes.ADD:
