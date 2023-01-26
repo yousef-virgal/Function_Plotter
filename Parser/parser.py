@@ -4,11 +4,6 @@ from Parser.Tokenizer.const import TokenTypes
 from Parser.node import Node, VariableNode
 from Parser.nodeTypes import NodeTypes
 
- # mathop = * | / DONE
- # addop = + | - DONE
- # math = exp | exp addop math  parse
- # exp = node | node mathop exp
- # node = num | num X [^num] | X [^num] Done
 class Parser:
 
     def __init__(self) -> None:
