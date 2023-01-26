@@ -51,15 +51,47 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.screen)
     
     def minInputChangeHandler(self, newText):
+        """
+        A function that handels the change of the minmium edit line
+        
+        Arguments:
+            newText: the new value of the editline
+        Returns:
+            None
+        """
         self.min = self.getNumber(newText)
     
     def maxInputChangeHandler(self, newText):
+        """
+        A function that handels the change of the maxmium edit line
+        
+        Arguments:
+            newText: the new value of the editline
+        Returns:
+            None
+        """
         self.max = self.getNumber(newText)
 
     def functionChangeHandler(self,newText):
+        """
+        A function that handels the change of the function edit line
+        
+        Arguments:
+            newText: the new value of the editline 
+        Returns:
+            None
+        """
         self.function = newText
     
     def plotButtonClickHandler(self):
+        """
+        A function that handels the click on the plot button
+
+        Arguments:
+            None
+        Returns:
+            None
+        """
         if self.min > self.max:
             self.popupScreen.setText("Minimum value greater than Maximum value")
             self.popupScreen.exec_()
@@ -76,6 +108,15 @@ class MainWindow(QMainWindow):
             self.popupScreen.exec_()
 
     def computeFunction(self,xArray,tree):
+        """
+        A function that traverses a tree to compute a function applied on xArray
+
+        Arguments:
+            xArray: a numpy array that represent the list of x values that we want to apply the function on
+            tree: the head of a tree structure that repsesnts the function 
+        Returns:
+            a numpy array  of the function applied on the xArray
+        """
         if tree.type == NodeTypes.ADD:
             return self.computeFunction(xArray,tree.children[0]) + self.computeFunction(xArray,tree.children[1])
         elif tree.type == NodeTypes.MUL:
@@ -87,7 +128,14 @@ class MainWindow(QMainWindow):
         elif tree.type == NodeTypes.VARIABLE:
             return (xArray**tree.value.powerValue) * tree.value.multiplierValue
         
-    def getNumber(self, text):
+    def getNumber(self, text:str):
+        """
+        This function retuns the integer representation of the text that is taken as input
+         Arguments:
+            text: a string representation of a number
+        Returns:
+            The integer representation of the string argument 
+        """
         if text == "-" or text == "":
             return 0
         else:

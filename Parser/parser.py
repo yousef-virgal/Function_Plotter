@@ -11,9 +11,26 @@ class Parser:
         self.currentToken = 0
     
     def setTokens(self, tokens):
+        """
+        A function that sets the list of tokens of the parser
+        
+        Arguments:
+            tokens: the list of tokens to set the parser's list to
+        Returns:
+            None
+        """
         self.tokens = tokens
 
     def isMultiplyOrDivide(self):
+        """
+        A function that checks if the current token is multiply or divide token and creates a new node  
+        to represent it 
+        
+        Arguments:
+            None
+        Returns:
+            a Node that represents the operation 
+        """
         if (self.match(TokenTypes.MUL)):
             return Node(type=NodeTypes.MUL, value="*")
         elif (self.match(TokenTypes.DIV)):
@@ -21,6 +38,15 @@ class Parser:
         return None
 
     def isAddOrSub(self):
+        """
+        A function that checks if the current token is addtion or subtraction token and creates a new node  
+        to represent it 
+        
+        Arguments:
+            None
+        Returns:
+            a Node that represents the operation
+        """
         if (self.match(TokenTypes.SUB)):
             return Node(type=NodeTypes.SUB, value="-")
         elif (self.match(TokenTypes.ADD)):
@@ -29,6 +55,14 @@ class Parser:
 
    
     def mulOrDivExperssion(self):
+        """
+        A function that parses an experssion that conatins multiplication or divison opertion
+        
+        Arguments:
+            None
+        Returns:
+            a Node that represents the head of the paresd experssion 
+        """
         leftPart =  self.node()
         if leftPart.type == NodeTypes.VARIABLE and leftPart.value.multiplierValue == None:
             raise Exception("Invalid Expersion")
@@ -44,6 +78,14 @@ class Parser:
             return leftPart
     
     def node(self):
+        """
+        A function that parses an experssion that can contain a number or variable 
+        
+        Arguments:
+            None
+        Returns:
+            a Node that represents the head of the paresd experssion 
+        """
         node = Node(type=NodeTypes.VARIABLE)
         values = VariableNode()
 
@@ -71,6 +113,15 @@ class Parser:
 
         
     def match(self, matchValue, consume=True):
+        """
+        A function that checks if a the current token matches a certain token value and consumes the token if the flag is set to true
+        
+        Arguments:
+            matchValue: the token value to comapre to
+            consume: a flag to indicate whether to cosnume the token or not
+        Returns:
+            a boolean indicating if the current token matched a certain value 
+        """
         if (self.currentToken > len(self.tokens) - 1):
             return False
         if self.tokens[self.currentToken].tokenType == matchValue:
@@ -80,11 +131,27 @@ class Parser:
         return False
     
     def peek(self):
+        """
+        A function that retuns the next token in the list
+        
+        Arguments:
+            None
+        Returns:
+            the next token in the list if exists else it will return -1
+        """
         if (self.currentToken + 1 > len(self.tokens) - 1):
             return -1
         return self.tokens[self.currentToken]
 
     def parse(self):
+        """
+        A function that parses an experssion that conatins addition or subtraction opertion
+        
+        Arguments:
+            None
+        Returns:
+            a Node that represents the head of the paresd experssion 
+        """
         leftPart = self.mulOrDivExperssion()
         if leftPart.type == NodeTypes.VARIABLE and leftPart.value.multiplierValue == None:
             raise Exception("Invalid Expersion")

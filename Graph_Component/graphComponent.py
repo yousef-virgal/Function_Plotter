@@ -10,6 +10,17 @@ class GraphComponent(FigureCanvasQTAgg):
         super(GraphComponent, self).__init__(self.fig)
     
     def updateGraph(self, xMin, xMax, tree,function):
+        """
+        A function that updates the graph plot
+        
+        Arguments:
+            xMin: the minmium value for X
+            xMax: the maximum value for X
+            tree: head of the tree that represents the function to be applied
+            function: function that traverses the tree 
+        Returns:
+            None
+        """
         xAxis = np.linspace(xMin,xMax,1_000)
         yAxis = function(xAxis,tree)
 
