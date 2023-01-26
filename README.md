@@ -2,8 +2,7 @@
 
 Function_Plotter is an application that lets users plot a polynomial function starting from minimum
 value and ending at a maximum value specfied by the user
-
-
+ 
 
 ### Notes
 
@@ -15,6 +14,14 @@ value and ending at a maximum value specfied by the user
    4. lowerExp = node | node multiplyOrDivision lowerExp
    5. node = number | number X (^number)? | X (^number)? 
    6. number = integer | float  
+
+## Installation
+
+1. Clone the repository
+2. Navigate to the project directory
+3. Install the requirements.txt file 
+> pip install -r requirements.txt
+4. Run the app.py file 
 
 ## Examples
 
