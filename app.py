@@ -1,5 +1,6 @@
 import sys
 from PySide2.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout,QVBoxLayout, QMessageBox
+from PySide2.QtGui  import QPalette, QColor, QIcon
 
 from Edit_line_Component.editLineComponent import EditLine
 from Button_Component.buttonComponent import PlotButton
@@ -17,11 +18,13 @@ class MainWindow(QMainWindow):
         self.function = ""
 
         self.setWindowTitle("Function Ploter")
+        self.setWindowIcon(QIcon("./assets/appIcon.png"))
+        
         self.screen = QWidget()
         self.popupScreen = QMessageBox()
         self.horizontalLayout = QHBoxLayout()
         self.verticalLayout =  QVBoxLayout()
-
+        
         self.graph = GraphComponent(self, width=5, height=4, dpi=100)
         
         self.minEditLine = EditLine(id="min", labelText="Minimum value for x:", editTextIntialValue="0", inputChangeHandler=self.minInputChangeHandler)
@@ -41,6 +44,10 @@ class MainWindow(QMainWindow):
         self.popupScreen.setIcon(QMessageBox.Critical)
 
         self.screen.setLayout(self.horizontalLayout)
+        palette = self.screen.palette()
+        palette.setColor(QPalette.Window, QColor(237, 233, 232))
+        self.screen.setPalette(palette)
+        self.screen.setAutoFillBackground(True)
         self.setCentralWidget(self.screen)
     
     def minInputChangeHandler(self, newText):

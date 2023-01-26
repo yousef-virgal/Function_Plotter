@@ -1,5 +1,5 @@
 from PySide2.QtWidgets import QWidget, QHBoxLayout, QLabel, QLineEdit
-from PySide2.QtGui import QIntValidator
+from PySide2.QtGui import QIntValidator, QFont
 
 
 class EditLine(QWidget):
@@ -21,6 +21,10 @@ class EditLine(QWidget):
         self.editText.setText(editTextIntialValue)
         self.editText.textChanged.connect(inputChangeHandler)
 
+        self.editText.setStyleSheet("QLineEdit {  border: 2px solid gray;"
+                                         "border-radius: 5px;}")
+        self.label.setFont(QFont("Arial font",9))
+        
         self.layout.addWidget(self.label)
         self.layout.addWidget(self.editText)
 
