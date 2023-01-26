@@ -31,11 +31,13 @@ class MainWindow(QMainWindow):
         self.maxEditLine = EditLine(id="max", labelText="Maximum value for x:", editTextIntialValue="0", inputChangeHandler=self.maxInputChangeHandler)
         self.functionEditText = EditLine(id="function", labelText="Enter Function",  inputChangeHandler=self.functionChangeHandler, allowOnlyNumbers=False)
         self.plotButton = PlotButton(buttonText="Plot", buttonHandler=self.plotButtonClickHandler)
+        self.clearButton = PlotButton(buttonText="Clear", buttonHandler=self.clearButtonClickHandler)
 
         self.verticalLayout.addWidget(self.minEditLine)
         self.verticalLayout.addWidget(self.maxEditLine)
         self.verticalLayout.addWidget(self.functionEditText)
         self.verticalLayout.addWidget(self.plotButton)
+        self.verticalLayout.addWidget(self.clearButton)
 
         self.horizontalLayout.addLayout(self.verticalLayout,3)
         self.horizontalLayout.addWidget(self.graph,7)
@@ -140,7 +142,8 @@ class MainWindow(QMainWindow):
             return 0
         else:
             return int(text)
-
+    def clearButtonClickHandler(self):
+        self.graph.clearGraph()
 app = QApplication(sys.argv)
 
 window = MainWindow()

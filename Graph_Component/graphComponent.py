@@ -28,3 +28,8 @@ class GraphComponent(FigureCanvasQTAgg):
         self.axes = self.fig.add_subplot(111)
         self.axes.plot(xAxis, yAxis)
         self.fig.canvas.draw()
+    
+    def clearGraph(self):
+        self.fig.clear()
+        self.axes = self.fig.add_subplot(111)
+        self.fig.canvas.draw()
