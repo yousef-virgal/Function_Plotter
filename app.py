@@ -1,5 +1,5 @@
 import sys
-from PySide2.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout,QVBoxLayout, QLabel
+from PySide2.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout,QVBoxLayout, QMessageBox
 
 from Edit_line_Component.editLineComponent import EditLine
 from Button_Component.buttonComponent import PlotButton
@@ -15,10 +15,10 @@ class MainWindow(QMainWindow):
         self.min = 0
         self.max = 0 
         self.function = ""
-        self.tree = None
 
         self.setWindowTitle("Function Ploter")
         self.screen = QWidget()
+        self.popupScreen = QMessageBox()
         self.horizontalLayout = QHBoxLayout()
         self.verticalLayout =  QVBoxLayout()
 
@@ -37,6 +37,9 @@ class MainWindow(QMainWindow):
         self.horizontalLayout.addLayout(self.verticalLayout,3)
         self.horizontalLayout.addWidget(self.graph,7)
 
+        self.popupScreen.setWindowTitle("Error")
+        self.popupScreen.setIcon(QMessageBox.Critical)
+
         self.screen.setLayout(self.horizontalLayout)
         self.setCentralWidget(self.screen)
     
@@ -50,7 +53,10 @@ class MainWindow(QMainWindow):
         self.function = newText
     
     def plotButtonClickHandler(self):
-        print("clicked")
+        if self.min > self.max:
+            self.popupScreen.setText("Minimum value greater than Maximum value")
+            self.popupScreen.exec_()
+            return
         tokenizer = Tokenizer()
         tokenizer.setText(self.function)
         parser = Parser()
